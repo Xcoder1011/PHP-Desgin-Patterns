@@ -255,3 +255,26 @@ $foo = "10.0 pigs " + 1;          // $foo is float (11)
 $foo = "10.0 pigs " + 1.0;        // $foo is float (11)
 
 echo "\$foo==$foo; type is " . gettype($foo) . "<br />\n";
+
+
+
+/// 《NULL值》
+///
+///  NULL 值表示一个变量没有值
+///  NULL 类型只有一个值，就是不区分大小写的常量 NULL。
+/// 在下列情况下一个变量被认为是 NULL：
+/// 1. 被赋值为 NULL。
+/// 2. 尚未被赋值。
+/// 3. 被 unset()。
+
+$var = NULL;
+
+// 使用 (unset) $var 将一个变量转换为 null 将不会删除该变量或 unset 其值。仅是返回 NULL 值而已。
+
+$emptyArray = array();
+var_dump($emptyArray == null);   # bool(true)
+var_dump($emptyArray === null);  # bool(false)
+var_dump(is_null($emptyArray));             # bool(false)
+
+var_dump(null==0);               # bool(true)
+var_dump(null===0);              # bool(false)
