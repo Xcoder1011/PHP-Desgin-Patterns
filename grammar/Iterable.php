@@ -10,7 +10,7 @@
 ///
 /// 1. PHP 7.1 中引入的一个伪类型
 /// 2. 它接受任何实现了 Traversable 接口的 array 或对象， 这些类型都能用 foreach 迭代
-
+///
 
 // 1.可迭代参数类型示例
 function foo1(iterable $iterable) {

@@ -11,7 +11,7 @@
 ///
 
 
-// 1. 回调函数示例
+/// 1. 回调函数示例
 
 function eat() {
     echo 'eat';
@@ -63,6 +63,7 @@ class People {
 }
 
 // Type 1: Simple callback
+
 call_user_func('eat');
 call_user_func(eat());
 
@@ -75,6 +76,20 @@ call_user_func(array($people, 'run'));
 
 // Type 4: Static class method call (As of PHP 5.2.3)
 call_user_func('People::run');
+
+
+// 最简单的调用，如果函数的名称指定给变量，也可以调用该函数
+
+$funcName = 'eat';
+$funcName();
+
+$funcName = 'People::run';
+$funcName();
+
+$funcCallArr = [$people, 'run'];
+$funcCallArr();
+
+return;
 
 echo "<br>";
 
@@ -174,6 +189,171 @@ foreach ($itemLists as $itemList)
 
 
 
+/// 3. 类型申明
+///
+
+// 3.1 单一类型：
+// self , array , callable , bool , int , float , string , iterable , object , mixed (值可以为任何类型。)
+
+function sum($a , $b) : float  {
+    return $a + $b;
+}
+
+var_dump(sum(1, 2));   #输出：float(3)
+
+var_dump(sum(1.5, 2.0));   # 会强制转化为整型
+
+
+// 返回一个对象
+function getTestClass() : Test {
+    return new Test();
+}
+
+var_dump(getTestClass());  # object(Test)#1 (0) {}
+
+
+// 3.2 Nullable
+
+// 自 PHP 7.1.0 起，类型声明允许前置一个问号 (?) 用来声明这个值允许为指定类型，或者为 NULL。
+
+function func(?Test $test)  # 定义可空（Nullable）的参数类型
+{
+    var_dump($test);
+}
+
+func(new Test());
+func(null);   # NULL
+
+
+// 在 PHP 7.1.0 之前版本中，可以通过设置参数的默认值为 null 来实现允许为空的参数。不建议这样做，因为影响到类的继承调用。
+
+function func2(Test $test = null)  # ❌ 不建议这样做，响到类的继承调用
+{
+    var_dump($test);
+}
+
+
+// 3.3 联合类型
+
+// 联合类型接受多个不同的类型做为参数。声明联合类型的语法为 T1|T2|...。联合类型自 PHP 8.0.0 起可用。
+// null 类型允许在联合类型中使用，例如 T1|T2|null 代表接受一个空值为参数。
+// 已经存在的 ?T 语法可以视为以下联合类型的一个简写 T|null。
+
+// null , false 不能作为一个独立的类型使用, 因此，false、false|null、 ?false 都是不可以用的。
+
+/*
+ *
+function foo(): int|INT {} // 不允许
+function foo(): bool|false {} // 不允许
+
+use A as B;
+function foo(): A|B {} // 不允许 ("use" 是名称解析的一部分)
+
+class_alias('X', 'Y');
+function foo(): X|Y {} // 允许 (运行时才能知道重复性)
+
+*/
+
+
+// 3.4 开启严格模式， 使用 declare 开启 strict_types：
+//     只有为标量类型的声明开启严格类型。
+
+# declare(strict_types = 1);
+
+
+/*
+
+// int|string
+42    --> 42          // 类型完全匹配
+"42"  --> "42"        // 类型完全匹配
+new ObjectWithToString --> "__toString() 的结果"
+                      // object 不兼容 int，降级到 string
+42.0  --> 42          // float 与 int 兼容
+42.1  --> 42          // float 与 int 兼容
+1e100 --> "1.0E+100"  // float 比 int 大太多了，降级到 string
+INF   --> "INF"       // float 比 int 大太多了，降级到 string
+true  --> 1           // bool 与 int 兼容
+[]    --> TypeError   // array 不兼容 int 或 string
+
+// int|float|bool
+"45"    --> 45        // int 的数字字符串
+"45.0"  --> 45.0      // float 的数字字符串
+
+"45X"   --> true      // 不是数字字符串，降级到 bool
+""      --> false     // 不是数字字符串，降级到 bool
+"X"     --> true      // 不是数字字符串，降级到 bool
+[]      --> TypeError // array 不兼容 int、float、bool
+
+*/
 
 
 
+/// 4. 伪类型
+
+// 4.1  mixed
+//      说明一个参数可以接受多种不同的（但不一定是所有的）类型。
+//      例如 gettype() 可以接受所有的 PHP 类型，str_replace() 可以接受字符串和数组。
+
+
+// 4.2  number
+//      说明一个参数可以是 integer 或者 float。
+
+// 4.3  array|object
+//      意思是参数既可以是 array 也可以是 object。
+
+// 4.4  void
+
+
+/// 5. 类型转换
+//  PHP 在变量定义中不需要（或不支持）明确的类型定义；变量类型是根据使用该变量的上下文所决定的。
+
+// 5.1 类型强制转换: 在要转换的变量之前加上用括号()括起来的目标类型。
+
+$foo = 10;   // $foo is an integer
+$bar = (boolean) $foo;   // $bar is a boolean
+
+
+
+/*
+
+ 允许的强制转换有：
+
+(int), (integer) - 转换为整形 integer
+(bool), (boolean) - 转换为布尔类型 boolean
+(float), (double), (real) - 转换为浮点型 float
+(string) - 转换为字符串 string
+(array) - 转换为数组 array
+(object) - 转换为对象 object
+
+*/
+
+$foo = (int) $bar;
+
+// 将字符串文字和变量转换为二进制字符串：
+$string = "string";
+$binary = (binary)$string;
+
+
+
+settype($a,'bool');
+var_dump($a);         //boolean false
+
+settype($b,'string');
+var_dump($b);        //string '' (length=0)
+
+settype($c,'array');
+var_dump($c);        //array (size=0)  empty
+
+settype($d,'int');
+var_dump($d);       //int 0
+
+settype($e,'float');
+var_dump($e);      //float 0
+
+settype($f,'object');
+var_dump($f);     //object(stdClass)[1]
+
+
+$_POST['a'] = "42";
+
+is_int( $_POST['a'] ); //false
