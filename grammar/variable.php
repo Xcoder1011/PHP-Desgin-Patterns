@@ -49,14 +49,13 @@ unset($c); // Now isset($c) returns false;
 
 
 
-
 /// 2. 变量范围
 /// 大部分的 PHP 变量只有一个单独的范围
 
 $a = 1;
 $b = 2;
 
-include 'c.inc';  #这里变量 $a,$b 将会在包含文件 c.inc 中生效
+// include 'c.inc';  #这里变量 $a,$b 将会在包含文件 c.inc 中生效
 
 
 /// 2.1 global 关键字
@@ -85,9 +84,6 @@ function logAction3()
     $GLOBALS['b'] = $GLOBALS['a'] + $GLOBALS['b'];  // 等价于上面的方法
 
 }
-
-logAction();
-
 
 function test_global() {
 
@@ -128,10 +124,11 @@ function test_static_variable2()
 }
 
 
-
 /// 2.3 对于变量的 static 和 global 定义是以引用的方式实现的，能导致预料之外的行为
 ///
 
+/*
+ *
 function test_global_ref() {
     global $obj;
     $obj = &new stdclass;
@@ -185,8 +182,8 @@ echo "\n";
 $obj2 = get_instance_noref();
 $still_obj2 = get_instance_noref();
 
-/*
- *
+
+
 以上例程会输出：
 
 Static object: NULL
@@ -201,7 +198,44 @@ int(1)
 */
 
 
-/// 3. 预定义变量
+/// 3. 可变变量
+///   可变变量获取了一个普通变量的值作为这个可变变量的变量名
+///   可变变量获取了一个普通变量的值作为这个可变变量的变量名
+///
+$a = 'hello';   # 普通变量 $a 的内容是“hello”
+
+$$a = 'world';  # 可变变量 $hello 的内容是"world"
+
+echo "$a ${$a}";   # hello world
+echo "$a $hello";  # hello world
+
+
+$Bar = "a";
+$Foo = "Bar";
+$World = "Foo";
+$Hello = "World";
+$a = "Hello";
+
+$a; //Returns Hello
+$$a; //Returns World
+$$$a; //Returns Foo
+$$$$a; //Returns Bar
+$$$$$a; //Returns a
+
+$$$$$$a; //Returns Hello
+$$$$$$$a; //Returns World
+
+
+
+$varname = "foo";
+$foo = "bar";
+
+print $$varname;  // Prints "bar"
+print "$$varname";  // Prints "$foo"
+print "${$varname}"; // Prints "bar"
+
+
+/// 4. 预定义变量
 ///
 /// PHP 指令 register_globals 的默认值为 off
 
@@ -253,7 +287,6 @@ function WorkingExample($Variable_Name='_POST') {
 
 
 
-
 $_GET['avar'] = 'b';
 print_r($_GET); print('<br>');
 print_r($_REQUEST);
@@ -280,3 +313,7 @@ if (isset($proxy)) {
     echo "Your proxy IP is $proxy<BR>\n";
 }
 
+
+//// 确定变量类型
+///
+/// 判断变量的类型: gettype()，is_array()，is_float()，is_int()，is_object() 和 is_string()。

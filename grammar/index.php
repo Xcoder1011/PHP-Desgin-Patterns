@@ -276,5 +276,138 @@ var_dump($emptyArray == null);   # bool(true)
 var_dump($emptyArray === null);  # bool(false)
 var_dump(is_null($emptyArray));             # bool(false)
 
-var_dump(null==0);               # bool(true)
-var_dump(null===0);              # bool(false)
+var_dump(null == 0);               # bool(true)
+var_dump(null === 0);              # bool(false)
+
+
+/// 《常量》
+///
+/// define() , const
+
+
+define('DEBUG',false);
+if (DEBUG) {
+
+}
+
+// 合法的常量名
+define('MIN_VALUE', '0.0');   // RIGHT - Works OUTSIDE of a class definition.
+define('MAX_VALUE', '1.0');   // RIGHT - Works OUTSIDE of a class definition.
+
+echo MIN_VALUE;   # 0.0
+
+//const MIN_VALUE = 0.0;         RIGHT - Works both INSIDE and OUTSIDE of a class definition.
+//const MAX_VALUE = 1.0;         RIGHT - Works both INSIDE and OUTSIDE of a class definition.
+
+class Constants
+{
+    //define('MIN_VALUE', '0.0');  WRONG - Works OUTSIDE of a class definition.
+    //define('MAX_VALUE', '1.0');  WRONG - Works OUTSIDE of a class definition.
+
+    const  MAX_PHOTOS_COUNT = 100;
+    public const MIN_PHOTOS_COUNT =1;
+
+    public static  function getMaxPhotosCount()
+    {
+        return self::MAX_PHOTOS_COUNT;
+    }
+}
+
+define('LOCATOR',   "/locator");
+define('CLASSES',   LOCATOR."/code/classes");
+define('FUNCTIONS', LOCATOR."/code/functions");
+define('USERDIR',   LOCATOR."/user");
+
+require_once(FUNCTIONS."/database.fnc");
+require_once(FUNCTIONS."/randchar.fnc");
+
+$usermap = USERDIR."/".$userid.".png";
+
+
+const CONSTANT = 'Hello World';
+
+// PHP 5.6.0 后的写法
+const ANOTHER_CONST = CONSTANT . '; Goodbye World';
+const ANIMALS = array('dog', 'cat', 'bird');
+echo ANIMALS[1]; // 将输出 "cat"
+
+const QUARTLIST=array('1. Quarter'=>array('jan','feb','mar'),'2.Quarter'=>array('may','jun','jul'));
+
+
+// PHP 7 中的写法
+define('ANIMALS', array(
+    'dog',
+    'cat',
+    'bird'
+));
+echo ANIMALS[1]; // 将输出 "cat"
+
+
+// const ArrayFromTextfile = file("mytextfile.txt", FILE_IGNORE_NEW_LINES);   # ❌
+
+define ("ArrayFromTextfile", file("mytextfile.txt", FILE_IGNORE_NEW_LINES));  # ✅
+
+print_r(ArrayFromTextfile);
+
+
+/// 《魔术常量》
+/*
+
+__LINE__	文件中的当前行号。
+__FILE__	文件的完整路径和文件名。如果用在被包含文件中，则返回被包含的文件名。
+__DIR__	文件所在的目录。如果用在被包括文件中，则返回被包括的文件所在的目录。它等价于 dirname(__FILE__)。除非是根目录，否则目录中名不包括末尾的斜杠。
+__FUNCTION__	当前函数的名称。匿名函数则为 {closure}。
+__CLASS__	当前类的名称。类名包括其被声明的作用区域（例如 Foo\Bar）。注意自 PHP 5.4 起 __CLASS__ 对 trait 也起作用。当用在 trait 方法中时，__CLASS__ 是调用 trait 方法的类的名字。
+__TRAIT__	Trait 的名字。Trait 名包括其被声明的作用区域（例如 Foo\Bar）。
+__METHOD__	类的方法名。
+__NAMESPACE__	当前命名空间的名称。
+ClassName::class	完整的类名
+*/
+
+class base_class
+{
+    function say_a()
+    {
+        # echo __FUNCTION__;
+        echo "'a' - said the " . __CLASS__ . "<br/>";
+    }
+
+    function say_b()
+    {
+        # echo __METHOD__;
+        echo "'b' - said the " . get_class($this) . "<br/>";
+    }
+}
+
+class derived_class extends base_class
+{
+    public function say_a()
+    {
+        parent::say_a();
+        echo "'a' - said the " . __CLASS__ . "<br/>";
+    }
+
+    public function say_b()
+    {
+        parent::say_b();
+        echo "'b' - said the " . get_class($this) . "<br/>";
+    }
+}
+
+$obj_b = new derived_class();
+
+$obj_b->say_a();
+
+echo "<br/>";
+
+$obj_b->say_b();
+
+/* 输出
+
+'a' - said the base_class
+'a' - said the derived_class
+
+'b' - said the derived_class
+'b' - said the derived_class
+
+*/
