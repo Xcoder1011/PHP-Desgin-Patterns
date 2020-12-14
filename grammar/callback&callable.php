@@ -89,7 +89,6 @@ $funcName();
 $funcCallArr = [$people, 'run'];
 $funcCallArr();
 
-return;
 
 echo "<br>";
 

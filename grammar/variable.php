@@ -21,9 +21,8 @@
 $foo = 'Bob';              // 将 'Bob' 赋给 $foo
 $bar = &$foo;              // 通过 $bar 引用 $foo
 $bar = "My name is $bar";  // 修改 $bar 变量
-echo $bar;
-echo $foo;                 // $foo 的值也被修改
-
+echo $bar . PHP_EOL;
+echo $foo . PHP_EOL;                 // $foo 的值也被修改
 
 
 // 1.3 注意！！！ 只有有名字的变量才可以引用赋值。
@@ -93,7 +92,7 @@ function test_global() {
     echo $HTTP_POST_VARS['name'];
 
     // Superglobals 在任何范围内都有效，它们并不需要 'global' 声明。Superglobals 是在 PHP 4.1.0 引入的。
-    echo $_POST['name'];
+    echo $_POST['name'] . PHP_EOL;
 }
 
 

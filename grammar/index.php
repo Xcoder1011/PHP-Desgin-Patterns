@@ -254,7 +254,7 @@ $foo = 4 + "10.2 Little Piggies"; // $foo is float (14.2)
 $foo = "10.0 pigs " + 1;          // $foo is float (11)
 $foo = "10.0 pigs " + 1.0;        // $foo is float (11)
 
-echo "\$foo==$foo; type is " . gettype($foo) . "<br />\n";
+echo "\$foo==$foo; type is " . gettype($foo) . PHP_EOL;
 
 
 
@@ -411,3 +411,36 @@ $obj_b->say_b();
 'b' - said the derived_class
 
 */
+
+
+class Circle
+{
+    protected $radius = 1.0;
+
+    public function setRadius($r)
+    {
+        $this->radius = $r;
+    }
+
+    public function __toString()
+    {
+        return 'Circle [radius=' . $this->radius . ']';
+    }
+}
+
+class Point
+{
+    protected $x = 0;
+    protected $y = 0;
+
+    public function setLocation($x, $y)
+    {
+        $this->x = $x;
+        $this->y = $y;
+    }
+
+    public function __toString()
+    {
+        return 'Point [x=' . $this->x . ', y=' . $this->y . ']';
+    }
+}
