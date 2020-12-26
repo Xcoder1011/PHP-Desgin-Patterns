@@ -70,4 +70,40 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitted') {
 </form>
 
 
+<?php
 
+/*
+ *  通过年份计算十二生肖
+ */
+function getChineseZodiac($year)
+{
+    switch ($year % 12)
+    {
+        case 0: return 'Monkey 申猴';
+        case 1: return 'Rooster  酉鸡';
+        case 2: return 'Dog 戌狗';
+        case 3: return 'Boar 亥猪';
+        case 4: return 'Rat 子鼠';
+        case 5: return 'Ox 丑牛';
+        case 6: return 'Tiger 寅虎';
+        case 7: return 'Rabbit 卯兔';
+        case 8: return 'Dragon 辰龙';
+        case 9: return 'Snake 巳蛇';
+        case 10: return 'Horse 午马';
+        case 11: return 'Sheep 未羊';
+    }
+}
+
+echo 'What animal sign were you born under?';
+echo 'I was born in the year of the Sheep.';
+echo 'Mine is the Sheep.';
+
+echo '<br/>';
+
+$years = [1990, 1991, 1995, 2013, 2014, 2018];
+
+foreach ($years as $year)
+{
+    $zodiac = getChineseZodiac($year);
+    echo "$year is the $zodiac. <br/>";
+}
