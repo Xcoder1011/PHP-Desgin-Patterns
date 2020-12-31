@@ -560,3 +560,192 @@ foreach ($years as $year)
     echo "$year is the $zodiac. <br/>";
 }
 
+
+// 7. declare
+
+// declare 结构用来设定一段代码的执行指令。
+
+/* 语法:
+
+declare (directive)
+    statement
+
+
+Tick（时钟周期）是一个在 declare 代码段中解释器每执行 N 条可计时的低级语句就会发生的事件。
+N 的值是在 declare 中的 directive 部分用 ticks=N 来指定的。
+
+// you can use this:
+declare(ticks=1) {
+    // entire script here
+}
+// 或者
+declare(ticks=1);
+
+*/
+
+function handler(){
+    print "hello <br />";
+}
+
+register_tick_function("handler");
+
+declare(ticks = 1){
+    $b = 2;
+}
+
+
+// declare(encoding = 'ISO-8859-1');
+
+// declare(encoding='UTF-8');   # 对脚本指定编码方式
+
+/*
+
+
+
+
+// 8. match  （PHP8）
+
+
+$age = 23;
+
+$result = match (true) {
+    $age >= 65 => 'senior',
+    $age >= 25 => 'adult',
+    $age >= 18 => 'young adult',
+    default => 'kid',
+};
+
+var_dump($result);  # string(11) "young adult"
+
+
+
+$text = 'Bienvenue chez nous';
+
+$result = match (true) {
+    str_contains($text, 'Welcome') || str_contains($text, 'Hello') => 'en',
+    str_contains($text, 'Bienvenue') || str_contains($text, 'Bonjour') => 'fr',
+    // ...
+};
+
+var_dump($result);   # string(2) "fr"
+
+
+$result = match ($x) {
+    // This match arm:
+$a, $b, $c => 5,
+    // Is equivalent to these three match arms:
+    $a => 5,
+    $b => 5,
+    $c => 5,
+};
+
+$result = match ($x) {
+    foo() => ...,
+    $this->bar() => ..., // bar() isn't called if foo() === $x
+    $this->baz => beep(), // beep() isn't called unless $x === $this->baz
+    // etc.
+};
+
+$expressionResult = match ($condition) {
+    1, 2 => foo(),
+    3, 4 => bar(),
+    default => baz(),
+};
+
+
+$condition = 5;
+
+try {
+    match ($condition) {
+        1, 2 => foo(),
+        3, 4 => bar(),
+    };
+} catch (\UnhandledMatchError $e) {
+    var_dump($e);
+}
+
+
+
+function days_in_month(string $month): int
+{
+    static $lookup = [
+    'jan' => 31,
+    'feb' => 0,
+    'mar' => 31,
+    'apr' => 30,
+    'may' => 31,
+    'jun' => 30,
+    'jul' => 31,
+    'aug' => 31,
+    'sep' => 30,
+    'oct' => 31,
+    'nov' => 30,
+    'dec' => 31
+    ];
+
+    $name = strtolower(substr($name, 0, 3));
+
+    if(isset($lookup[$name])) {
+        if($name == 'feb') {
+            return is_leap($year) ? 29 : 28;
+        } else {
+            return $lookup[$name];
+        }
+    }
+    throw new InvalidArgumentException("Bogus month");
+}
+
+//  上面方法可以改写为：
+
+function days_in_month(string $month): int
+{
+    return match(strtolower(substr($name, 0, 3))) {
+        'jan' => 31,
+        'feb' => is_leap($year) ? 29 : 28,
+        'mar' => 31,
+        'apr' => 30,
+        'may' => 31,
+        'jun' => 30,
+        'jul' => 31,
+        'aug' => 31,
+        'sep' => 30,
+        'oct' => 31,
+        'nov' => 30,
+        'dec' => 31,
+        default => throw new InvalidArgumentException("Bogus month"),
+    };
+}
+
+ */
+
+
+
+/*
+
+// 9. include   require
+
+// include 语句包含并运行指定文件。
+
+include 'vars.php';
+include 'file.php?foo=1&bar=2';
+// Works.
+include 'http://www.example.com/file.php?foo=1&bar=2';
+include 'file.php';  // Works.
+
+
+// works
+if ((include 'vars.php') == TRUE) { // 比较 include 的返回值
+    echo 'OK';
+}
+
+
+// require_once 语句和 require 语句完全相同，唯一区别是 PHP 会检查该文件是否已经被包含过，如果是则不会再次包含。
+
+define('__ROOT__', dirname(dirname(__FILE__)));
+require_once(__ROOT__.'/config.php');
+require_once('var.php');
+
+// include_once 语句在脚本执行期间包含并运行指定文件。此行为和 include 语句类似，唯一区别是如果该文件中已经被包含过，则不会再次包含。如同此语句名字暗示的那样，只会包含一次。
+include_once "a.php";
+
+*/
