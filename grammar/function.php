@@ -160,3 +160,63 @@ $a = DateInterval::createFromDateString('P1D');
 $b = DateInterval::createFromDateString('P2D');
 
 echo total_intervals('d', $a, $b).' days';  # 0 days
+
+
+/// 3. 可变数量的参数列表
+
+// 从函数返回一个引用
+
+function &scalar_ref_inc_x(&$x)
+{
+    $x++;
+    return $x;
+}
+
+$x = 1;
+
+$x2 =& scalar_ref_inc_x($x);
+
+scalar_ref_inc_x($x2);
+
+print $x . ', ' . $x2 . "\n";   # 3, 3
+
+/// 4. 可变函数
+
+// 4.1 如果一个变量名后有圆括号，PHP 将寻找与变量的值同名的函数，并且尝试执行它。
+
+function echoit($string)
+{
+    echo $string;
+}
+$func = 'echoit';
+$func('test');  // This calls echoit()
+
+
+
+// 4.2 Variable 方法和静态属性示例
+// 当调用静态方法时，函数调用要比静态属性优先：
+class TestClass
+{
+    static $variable = 'static property';
+    static function Variable()
+    {
+        echo 'Method Variable called';
+    }
+
+    static function callOtherFunc()
+    {
+        $func = 'TestClass::funcToCall';
+        $func();
+    }
+
+}
+
+echo TestClass::$variable;  # 打印出 static property
+
+$variable = "Variable";
+
+// 注意： 这将调用TestClass->Variable（），读取此作用域中的$Variable。
+
+TestClass::$variable();   # 打印出 Method Variable called
+
+
