@@ -172,6 +172,8 @@ echo $fun->having_fun();
 
 
 /////////////////////
+///
+///*
 
 
 // 箭头函数  是 PHP 7.4 的新语法，是一种更简洁的 匿名函数 写法。
@@ -180,39 +182,40 @@ echo $fun->having_fun();
 
 // 1. 箭头函数自动捕捉变量的值
 
-$y = 1;
-$fnc1 = fn($x) => $x + $y;
-// 相当于 using $y by value:
+//$y = 1;
+//$fnc1 = fn($x) => $x + $y;
+//// 相当于 using $y by value:
+//
+//$fnc2 = function ($x) use ($y) {
+//    return $x + $y;
+//};
+//
+//var_export($fnc1(3));
+//var_export($fnc2(4));
+//
+//
+//
+//// 2. 箭头函数自动捕捉变量的值，即使在嵌套的情况下
+//$z = 1;
+//$func3 = fn($x) => fn($y) => $x * $y + $z;
+//// 输出 51
+//var_export($func3(5)(10));
+//
+//
+//// 3. 合法的箭头函数例子
+//
+//fn(array $x) => $x;
+//static fn(): int => $x;
+//fn($x = 42) => $x;
+//fn(&$x) => $x;
+//fn&($x) => $x;
+//fn($x, ...$rest) => $rest;
+//
+//
+//// 4. 来自外部范围的值不能在箭头函数内修改
+//
+//$x = 1;
+//$fn = fn() => $x++; // 不会影响 x 的值
+//$fn();
+//var_export($x);  // 输出 1
 
-$fnc2 = function ($x) use ($y) {
-    return $x + $y;
-};
-
-var_export($fnc1(3));
-var_export($fnc2(4));
-
-
-
-// 2. 箭头函数自动捕捉变量的值，即使在嵌套的情况下
-$z = 1;
-$func3 = fn($x) => fn($y) => $x * $y + $z;
-// 输出 51
-var_export($func3(5)(10));
-
-
-// 3. 合法的箭头函数例子
-
-fn(array $x) => $x;
-static fn(): int => $x;
-fn($x = 42) => $x;
-fn(&$x) => $x;
-fn&($x) => $x;
-fn($x, ...$rest) => $rest;
-
-
-// 4. 来自外部范围的值不能在箭头函数内修改
-
-$x = 1;
-$fn = fn() => $x++; // 不会影响 x 的值
-$fn();
-var_export($x);  // 输出 1
